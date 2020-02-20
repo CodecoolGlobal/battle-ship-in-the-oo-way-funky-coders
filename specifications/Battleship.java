@@ -108,7 +108,7 @@ public class Battleship
             if (col >= 0 && col <= 9 && row != -1)
                 break;
                     
-            System.out.println("Invalid location!");
+            System.out.println("Invalid square!");
         }
         
         if (opp.playerOcean.hasShip(row, col))
@@ -163,11 +163,11 @@ public class Battleship
                         }
                     }
     
-                    System.out.println("Invalid location!");
+                    System.out.println("Invalid square!");
                 }
             
                 //System.out.println("FURTHER DEBUG: row = " + row + "; col = " + col);
-                p.ships[normCounter].setLocation(row, col);
+                p.ships[normCounter].setSquare(row, col);
                 p.ships[normCounter].setDirection(dir);
                 p.playerOcean.addShip(p.ships[normCounter]);
                 p.playerOcean.printShips();
@@ -207,7 +207,7 @@ public class Battleship
                 }
                 
                 //System.out.println("FURTHER DEBUG: row = " + row + "; col = " + col);
-                p.ships[normCounter].setLocation(row, col);
+                p.ships[normCounter].setSquare(row, col);
                 p.ships[normCounter].setDirection(dir);
                 p.playerOcean.addShip(p.ships[normCounter]);
                 
@@ -250,7 +250,7 @@ public class Battleship
         // Check if overlapping with another ship
         if (dir == 0) // Hortizontal
         {
-            // For each location a ship occupies, check if ship is already there
+            // For each square a ship occupies, check if ship is already there
             for (int i = col; i < col+length; i++)
             {
                 //System.out.println("DEBUG: row = " + row + "; col = " + i);
@@ -263,7 +263,7 @@ public class Battleship
         }
         else if (dir == 1) // Vertical
         {
-            // For each location a ship occupies, check if ship is already there
+            // For each square a ship occupies, check if ship is already there
             for (int i = row; i < row+length; i++)
             {
                 //System.out.println("DEBUG: row = " + row + "; col = " + i);
@@ -309,7 +309,7 @@ public class Battleship
         // Check if overlapping with another ship
         if (dir == 0) // Hortizontal
         {
-            // For each location a ship occupies, check if ship is already there
+            // For each square a ship occupies, check if ship is already there
             for (int i = col; i < col+length; i++)
             {
                 //System.out.println("DEBUG: row = " + row + "; col = " + i);
@@ -321,7 +321,7 @@ public class Battleship
         }
         else if (dir == 1) // Vertical
         {
-            // For each location a ship occupies, check if ship is already there
+            // For each square a ship occupies, check if ship is already there
             for (int i = row; i < row+length; i++)
             {
                 //System.out.println("DEBUG: row = " + row + "; col = " + i);

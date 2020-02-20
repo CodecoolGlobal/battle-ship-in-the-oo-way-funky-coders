@@ -39,7 +39,7 @@ public class Player
         int counter = 5;
         for (Ship s: ships)
         {
-            if (s.isLocationSet() && s.isDirectionSet())
+            if (s.isSquareSet() && s.isDirectionSet())
                 counter--;
         }
         
@@ -47,9 +47,9 @@ public class Player
         
     }
     
-    public void chooseShipLocation(Ship s, int row, int col, int direction)
+    public void chooseShipSquare(Ship s, int row, int col, int direction)
     {
-        s.setLocation(row, col);
+        s.setSquare(row, col);
         s.setDirection(direction);
         playerOcean.addShip(s);
     }

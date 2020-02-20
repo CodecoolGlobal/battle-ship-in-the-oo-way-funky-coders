@@ -20,8 +20,8 @@ public class Ship
         this.direction = UNSET;
     }
     
-    // Has the location been init
-    public boolean isLocationSet()
+    // Has the square been init
+    public boolean isSquareSet()
     {
         if (row == -1 || col == -1)
             return false;
@@ -38,8 +38,8 @@ public class Ship
             return true;
     }
     
-    // Set the location of the ship
-    public void setLocation(int row, int col)
+    // Set the square of the ship
+    public void setSquare(int row, int col)
     {
         this.row = row;
         this.col = col;
