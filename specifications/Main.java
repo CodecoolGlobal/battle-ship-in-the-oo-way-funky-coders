@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Battleship
+public class Main
 {
     public static Scanner reader = new Scanner(System.in);
       

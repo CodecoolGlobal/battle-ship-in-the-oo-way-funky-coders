@@ -40,10 +40,10 @@ public class Ocean
         ocean[row][col].markMiss();
     }
     
-    // Set the status of this square object.
+    // Set the status of this location object.
     public void setStatus(int row, int col, int status)
     {
-        ocean[row][col].setStatus;
+        ocean[row][col].setStatus(status);
     }
     
     // Get the status of this square in the ocean  
