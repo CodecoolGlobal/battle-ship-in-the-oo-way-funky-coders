@@ -6,42 +6,94 @@ public class Main
       
     public static void main(String[] args)
     {
-        System.out.println("JAVA BATTLESHIP - ** Yuval Marcus **");  
+        System.out.println("JAVA BATTLESHIP"); 
         
-        System.out.println("\nPlayer SETUP:");
-        Player userPlayer = new Player();
-        setup(userPlayer);
-        
-        System.out.println("Computer SETUP...DONE...PRESS ENTER TO CONTINUE...");
-        reader.nextLine();
-        reader.nextLine();
-        Player computer = new Player();
-        setupComputer(computer);
-        System.out.println("\nCOMPUTER Ocean (FOR DEBUG)...");
-        computer.playerOcean.printShips();
-        
-        String result = "";
-        while(true)
+        // Chosing opponent type
+        System.out.println("\nPLAYES VS PLAYER (0) / PLAYER VS COMPUTER (1):");        
+        int typeChoice = reader.nextInt();
+        if (typeChoice == 0) 
         {
-            System.out.println(result);
-            System.out.println("\nUSER MAKE GUESS:");
-            result = askForGuess(userPlayer, computer);
+            System.out.println("\nPlayer 1 SETUP:");
+            Player userPlayer1 = new Player();
+            setup(userPlayer1);
             
-            if (userPlayer.playerOcean.hasLost())
-            {
-                System.out.println("COMP HIT!...USER LOSES");
-                break;
-            }
-            else if (computer.playerOcean.hasLost())
-            {
-                System.out.println("HIT!...COMPUTER LOSES");
-                break;
-            }
+            System.out.println("Player 2 SETUP:");
+            Player userPlayer2 = new Player();
+            setup(userPlayer2);
             
-            System.out.println("\nCOMPUTER IS MAKING GUESS...");
-              
-              
-            compMakeGuess(computer, userPlayer);
+            String result = "";
+            while(true)
+            {
+                System.out.println(result);
+                System.out.println("\nPLAYER 1 MAKE GUESS:");
+                result = askForGuess(userPlayer1, userPlayer2);
+                
+                if (userPlayer1.playerOcean.hasLost())
+                {
+                    System.out.println("PLAYER 1 HIT!...PLAYER 2 LOSES");
+                    break;
+                }
+                else if (userPlayer2.playerOcean.hasLost())
+                {
+                    System.out.println("PLAYER 2 HIT!...PLAYER 1 LOSES");
+                    break;
+                }
+                
+                System.out.println(result);
+                System.out.println("\nPLAYER 2 MAKE GUESS:");
+                result = askForGuess(userPlayer2, userPlayer1);
+
+                if (userPlayer1.playerOcean.hasLost())
+                {
+                    System.out.println("PLAYER 1 HIT!...PLAYER 2 LOSES");
+                    break;
+                }
+                else if (userPlayer2.playerOcean.hasLost())
+                {
+                    System.out.println("PLAYER 2 HIT!...PLAYER 1 LOSES");
+                    break;
+                }
+                
+            }
+        }
+
+        else if (typeChoice == 1) 
+        {
+            System.out.println("\nPlayer SETUP:");
+            Player userPlayer = new Player();
+            setup(userPlayer);
+            
+            System.out.println("Computer SETUP...DONE...PRESS ENTER TO CONTINUE...");
+            reader.nextLine();
+            reader.nextLine();
+            Player computer = new Player();
+            setupComputer(computer);
+            System.out.println("\nCOMPUTER Ocean (FOR DEBUG)...");
+            computer.playerOcean.printShips();
+            
+            String result = "";
+            while(true)
+            {
+                System.out.println(result);
+                System.out.println("\nUSER MAKE GUESS:");
+                result = askForGuess(userPlayer, computer);
+                
+                if (userPlayer.playerOcean.hasLost())
+                {
+                    System.out.println("COMP HIT!...USER LOSES");
+                    break;
+                }
+                else if (computer.playerOcean.hasLost())
+                {
+                    System.out.println("HIT!...COMPUTER LOSES");
+                    break;
+                }
+                
+                System.out.println("\nCOMPUTER IS MAKING GUESS...");
+                
+                
+                compMakeGuess(computer, userPlayer);
+            }
         }
     }
     
