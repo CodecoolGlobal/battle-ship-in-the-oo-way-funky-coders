@@ -8,128 +8,51 @@ public class Main
     {
         System.out.println("JAVA BATTLESHIP"); 
         
-        // Chosing opponent type
-        System.out.println("\nPLAYES VS PLAYER (0) / PLAYER VS COMPUTER (1):");        
-        int typeChoice = reader.nextInt();
-        if (typeChoice == 0) 
+        System.out.println("\nPlayer 1 SETUP:");
+        Player userPlayer1 = new Player();
+        setup(userPlayer1);
+        
+        System.out.println("Player 2 SETUP:");
+        Player userPlayer2 = new Player();
+        setup(userPlayer2);
+        
+        String result = "";
+        while(true)
         {
-            System.out.println("\nPlayer 1 SETUP:");
-            Player userPlayer1 = new Player();
-            setup(userPlayer1);
+            System.out.println(result);
+            System.out.println("\nPLAYER 1 MAKE GUESS:");
+            result = askForGuess(userPlayer1, userPlayer2);
             
-            System.out.println("Player 2 SETUP:");
-            Player userPlayer2 = new Player();
-            setup(userPlayer2);
-            
-            String result = "";
-            while(true)
+            if (userPlayer1.playerOcean.hasLost())
             {
-                System.out.println(result);
-                System.out.println("\nPLAYER 1 MAKE GUESS:");
-                result = askForGuess(userPlayer1, userPlayer2);
-                
-                if (userPlayer1.playerOcean.hasLost())
-                {
-                    System.out.println("PLAYER 1 HIT!...PLAYER 2 LOSES");
-                    break;
-                }
-                else if (userPlayer2.playerOcean.hasLost())
-                {
-                    System.out.println("PLAYER 2 HIT!...PLAYER 1 LOSES");
-                    break;
-                }
-                
-                System.out.println(result);
-                System.out.println("\nPLAYER 2 MAKE GUESS:");
-                result = askForGuess(userPlayer2, userPlayer1);
-
-                if (userPlayer1.playerOcean.hasLost())
-                {
-                    System.out.println("PLAYER 1 HIT!...PLAYER 2 LOSES");
-                    break;
-                }
-                else if (userPlayer2.playerOcean.hasLost())
-                {
-                    System.out.println("PLAYER 2 HIT!...PLAYER 1 LOSES");
-                    break;
-                }
-                
+                System.out.println("PLAYER 1 HIT!...PLAYER 2 LOSES");
+                break;
             }
+            else if (userPlayer2.playerOcean.hasLost())
+            {
+                System.out.println("PLAYER 2 HIT!...PLAYER 1 LOSES");
+                break;
+            }
+            
+            System.out.println(result);
+            System.out.println("\nPLAYER 2 MAKE GUESS:");
+            result = askForGuess(userPlayer2, userPlayer1);
+
+            if (userPlayer1.playerOcean.hasLost())
+            {
+                System.out.println("PLAYER 1 HIT!...PLAYER 2 LOSES");
+                break;
+            }
+            else if (userPlayer2.playerOcean.hasLost())
+            {
+                System.out.println("PLAYER 2 HIT!...PLAYER 1 LOSES");
+                break;
+            }
+                
         }
 
-        else if (typeChoice == 1) 
-        {
-            System.out.println("\nPlayer SETUP:");
-            Player userPlayer = new Player();
-            setup(userPlayer);
-            
-            System.out.println("Computer SETUP...DONE...PRESS ENTER TO CONTINUE...");
-            reader.nextLine();
-            reader.nextLine();
-            Player computer = new Player();
-            setupComputer(computer);
-            System.out.println("\nCOMPUTER Ocean (FOR DEBUG)...");
-            computer.playerOcean.printShips();
-            
-            String result = "";
-            while(true)
-            {
-                System.out.println(result);
-                System.out.println("\nUSER MAKE GUESS:");
-                result = askForGuess(userPlayer, computer);
-                
-                if (userPlayer.playerOcean.hasLost())
-                {
-                    System.out.println("COMP HIT!...USER LOSES");
-                    break;
-                }
-                else if (computer.playerOcean.hasLost())
-                {
-                    System.out.println("HIT!...COMPUTER LOSES");
-                    break;
-                }
-                
-                System.out.println("\nCOMPUTER IS MAKING GUESS...");
-                
-                
-                compMakeGuess(computer, userPlayer);
-            }
-        }
     }
     
-    private static void compMakeGuess(Player comp, Player user)
-    {
-        Randomizer rand = new Randomizer();
-        int row = rand.nextInt(0, 9);
-        int col = rand.nextInt(0, 9);
-        
-        // While computer already guessed this posiiton, make a new random guess
-        while (comp.oppOcean.alreadyGuessed(row, col))
-        {
-            row = rand.nextInt(0, 9);
-            col = rand.nextInt(0, 9);
-        }
-        
-        if (user.playerOcean.hasShip(row, col))
-        {
-            comp.oppOcean.markHit(row, col);
-            user.playerOcean.markHit(row, col);
-            System.out.println("COMP HIT AT " + convertIntToLetter(row) + convertCompColToRegular(col));
-        }
-        else
-        {
-            comp.oppOcean.markMiss(row, col);
-            user.playerOcean.markMiss(row, col);
-            System.out.println("COMP MISS AT " + convertIntToLetter(row) + convertCompColToRegular(col));
-        }
-        
-        
-        System.out.println("\nYOUR BOARD...PRESS ENTER TO CONTINUE...");
-        reader.nextLine();
-        user.playerOcean.printCombined();
-        System.out.println("PRESS ENTER TO CONTINUE...");
-        reader.nextLine();
-    }
 
     private static String askForGuess(Player p, Player opp)
     {
@@ -232,42 +155,7 @@ public class Main
         }
     }
 
-    private static void setupComputer(Player p)
-    {
-        System.out.println();
-        int counter = 1;
-        int normCounter = 0;
-        
-        Randomizer rand = new Randomizer();
-        
-        while (p.numOfShipsLeft() > 0)
-        {
-            for (Ship s: p.ships)
-            {
-                int row = rand.nextInt(0, 9);
-                int col = rand.nextInt(0, 9);
-                int dir = rand.nextInt(0, 1);
-                
-                //System.out.println("DEBUG: row-" + row + "; col-" + col + "; dir-" + dir);
-                
-                while (hasErrorsComp(row, col, dir, p, normCounter)) // while the random nums make error, start again
-                {
-                    row = rand.nextInt(0, 9);
-                    col = rand.nextInt(0, 9);
-                    dir = rand.nextInt(0, 1);
-                    //System.out.println("AGAIN-DEBUG: row-" + row + "; col-" + col + "; dir-" + dir);
-                }
-                
-                //System.out.println("FURTHER DEBUG: row = " + row + "; col = " + col);
-                p.ships[normCounter].setSquare(row, col);
-                p.ships[normCounter].setDirection(dir);
-                p.playerOcean.addShip(p.ships[normCounter]);
-                
-                normCounter++;
-                counter++;
-            }
-        }
-    }
+    
     
     private static boolean hasErrors(int row, int col, int dir, Player p, int count)
     {
@@ -330,63 +218,7 @@ public class Main
         return false;
     }
     
-    private static boolean hasErrorsComp(int row, int col, int dir, Player p, int count)
-    {
-        //System.out.println("DEBUG: count arg is " + count);
-        
-        int length = p.ships[count].getLength();
-        
-        // Check if off Ocean - Horizontal
-        if (dir == 0)
-        {
-            int checker = length + col;
-            //System.out.println("DEBUG: checker is " + checker);
-            if (checker > 10)
-            {
-                return true;
-            }
-        }
-        
-        // Check if off Ocean - Vertical
-        if (dir == 1) // VERTICAL
-        {
-            int checker = length + row;
-            //System.out.println("DEBUG: checker is " + checker);
-            if (checker > 10)
-            {
-                return true;
-            }
-        }
-            
-        // Check if overlapping with another ship
-        if (dir == 0) // Hortizontal
-        {
-            // For each square a ship occupies, check if ship is already there
-            for (int i = col; i < col+length; i++)
-            {
-                //System.out.println("DEBUG: row = " + row + "; col = " + i);
-                if(p.playerOcean.hasShip(row, i))
-                {
-                    return true;
-                }
-            }
-        }
-        else if (dir == 1) // Vertical
-        {
-            // For each square a ship occupies, check if ship is already there
-            for (int i = row; i < row+length; i++)
-            {
-                //System.out.println("DEBUG: row = " + row + "; col = " + i);
-                if(p.playerOcean.hasShip(i, col))
-                {
-                    return true;
-                }
-            }
-        }
-        
-        return false;
-    }
-
+    
 
     /*HELPER METHODS*/
     private static int convertLetterToInt(String val)
@@ -485,35 +317,4 @@ public class Main
         return toReturn;
     }
     
-    private static int convertCompColToRegular(int val)
-    {
-        int toReturn = -1;
-        switch (val)
-        {
-            case 0:   toReturn = 1;
-                        break;
-            case 1:   toReturn = 2;
-                        break;
-            case 2:   toReturn = 3;
-                        break;
-            case 3:   toReturn = 4;
-                        break;
-            case 4:   toReturn = 5;
-                        break;
-            case 5:   toReturn = 6;
-                        break;
-            case 6:   toReturn = 7;
-                        break;
-            case 7:   toReturn = 8;
-                        break;
-            case 8:   toReturn = 9;
-                        break;
-            case 9:   toReturn = 10;
-                        break;
-            default:    toReturn = -1;
-                        break;
-        }
-        
-        return toReturn;
-    }
-}
+    
